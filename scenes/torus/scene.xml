@@ -1,0 +1,138 @@
+<?xml version='1.0'?>
+<!-- Automatically converted from Rhino 5.0 -->
+
+<scene version="3.0.0">
+<!-- <scene version="0.6.0"> -->
+
+	<!-- <default name="integrator" value="path" /> -->
+	<default name="integrator" value="path_guiding_integrator" />
+	<!-- <default name="integrator" value="path_tracing_integrator_py" /> -->
+
+	<default name="spp" value="64" />
+	<default name="resx" value="1024" />
+	<default name="resy" value="768" />
+	<default name="max_depth" value="30" />
+	<default name="rr_depth" value="8" />
+
+	<integrator type="$integrator">
+		<integer name="max_depth" value="$max_depth" />
+		<integer name="rr_depth" value="$rr_depth" />
+	</integrator>
+
+	<sensor type="perspective">
+
+		<float name="fov" value="34.6222"/>
+		<string name="fov_axis" value="x"/>
+
+		<float name="near_clip" value="0.00582945"/>
+		<float name="far_clip" value="1165.89"/>
+
+		<float name="focus_distance" value="51.7808"/>
+		<!-- <float name="aperture_radius" value="0.1"/> -->
+
+		<transform name="to_world">
+			<lookat target="-23.7753, -37.4261, 29.4905" origin="-24.173, -38.184, 30.0076" up="0.261433, 0.446628, 0.855673"/>
+		</transform>
+		
+		<sampler type="independent">
+			<integer name="sample_count" value="$spp"/>
+		</sampler>
+
+		<film type="hdrfilm">
+			<integer name="width" value="$resx" />
+			<integer name="height" value="$resy" />
+			<string name="file_format" value="openexr" />
+			<string name="pixel_format" value="rgb" />
+			<rfilter type="gaussian"/>
+		</film>
+	</sensor>
+
+	<bsdf type="diffuse" id="mat_donut">
+		<rgb name="reflectance" value=".8,.8,.4"/>
+		<!-- Rhino object 'Donut' -->
+	</bsdf>
+
+	<bsdf type="conductor" id="mat_metal">
+		<string name="material" value="Al"/>
+		<!-- <float name="alpha" value="0.1"/> -->
+	</bsdf>
+
+	<bsdf type="roughdielectric" id="mat_glass">
+	<!-- <bsdf type="dielectric" id="mat_glass"> -->
+		<!-- Rhino object 'Glass' -->
+		<string name="int_ior" value="acrylic glass"/>
+		<string name="ext_ior" value="air"/>
+		<float name="alpha" value="0.01"/>
+	</bsdf>
+
+	<bsdf type="diffuse" id="mat_floor">
+		<!-- Rhino object 'Floor' -->
+	</bsdf>
+
+	<bsdf type="diffuse" id="mat_lamp">
+		<!-- Rhino object 'Lamp' -->
+	</bsdf>
+
+	<bsdf type="diffuse" id="FloorBSDF">
+		<rgb name="reflectance" value="0.725, 0.71, 0.68" />
+	</bsdf>
+
+	<shape type="serialized">
+		<string name="filename" value="meshes.serialized"/>
+		<integer name="shape_index" value="1"/>
+		<transform name="to_world">
+			<scale x=".4" y=".428"/>
+			<translate x="10"/>
+			<translate y="24.4"/>
+		</transform>
+
+		<!-- <ref id="mat_floor"/> -->
+		<ref id="FloorBSDF"/>
+	</shape>
+
+	<shape type="serialized">
+		<string name="filename" value="meshes.serialized"/>
+		<integer name="shape_index" value="2"/>
+
+		<ref id="mat_donut"/>
+	</shape>
+
+	<shape type="serialized">
+		<string name="filename" value="meshes.serialized"/>
+		<integer name="shape_index" value="3"/>
+
+		<ref id="mat_glass"/>
+	</shape>
+
+	<shape type="serialized">
+		<string name="filename" value="meshes.serialized"/>
+		<integer name="shape_index" value="4"/>
+
+		<ref id="mat_metal"/>
+	</shape>
+
+	<shape type="serialized">
+		<string name="filename" value="meshes.serialized"/>
+		<integer name="shape_index" value="5"/>
+
+		<ref id="mat_metal"/>
+	</shape>
+
+	<emitter type="directional">
+		<transform name="to_world">
+			<rotate y="1" angle="180"/>
+			<rotate y="1" angle="45"/>
+			<rotate z="1" angle="-45"/>
+		</transform>
+		<rgb name="irradiance" value="2, 2, 1.8"/>
+	</emitter>
+
+	<!-- <shape type="sphere">
+		<point name="center" x="-6.7" y="1.5" z="-1.828"/>
+		<float name="radius" value="0.5"/>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="1.0,0,0"/>
+		</bsdf>
+	</shape> -->
+
+</scene>
